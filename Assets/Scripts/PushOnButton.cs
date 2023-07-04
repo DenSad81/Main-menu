@@ -8,6 +8,10 @@ using UnityEngine.Serialization;
 
 public class PushOnButton : MonoBehaviour
 {
+    private const int Play = 0;
+    private const int AboutAutors = 1;
+    private const int Exit = 2;
+
     [SerializeField] private GameObject[] _gameObjectButtons;
     [SerializeField] private GameObject[] _gameObjectTextFields;
 
@@ -21,42 +25,32 @@ public class PushOnButton : MonoBehaviour
             _colorsOfTextFields.Add(new Color(0, 0, 0));
             _textFields.Add(_gameObjectTextFields[i].GetComponent<TMP_Text>());
         }
-
-        foreach (var gameObjectTextField in _gameObjectTextFields)
-        {
-            gameObjectTextField.SetActive(false);
-        }
     }
 
-    public void ProcessPushOnButton()
+    public void ProcessPushOnButtonPlay()
     {
-        int k = 0;
-        var posMouse = Input.mousePosition;
+        _gameObjectTextFields[Play].SetActive(true);
+        ChangeColor(Play);
+    }
 
-        foreach (var gameObject in _gameObjectButtons)
-        {
-            var positionButton = gameObject.GetComponent<RectTransform>().position;
-            var widthButton = gameObject.GetComponent<RectTransform>().rect.width;
-            var heightButton = gameObject.GetComponent<RectTransform>().rect.height;
+    public void ProcessPushOnButtonAboutAutors()
+    {
+        _gameObjectTextFields[AboutAutors].SetActive(true);
+        ChangeColor(AboutAutors);
+    }
 
-            var leftLimitOfPositionButton = positionButton.x - widthButton / 2;
-            var rightLimitOfPositionButton = positionButton.x + widthButton / 2;
-            var upLimitOfPositionButton = positionButton.y - heightButton / 2;
-            var dovnLimitOfPositionButton = positionButton.y + heightButton / 2;
+    public void ProcessPushOnButtonExit()
+    {
+        _gameObjectTextFields[Exit].SetActive(true);
+        ChangeColor(Exit);
+    }
 
-            if (leftLimitOfPositionButton < posMouse.x & posMouse.x < rightLimitOfPositionButton)
-                if (upLimitOfPositionButton < posMouse.y & posMouse.y < dovnLimitOfPositionButton)
-                    break;
-
-            k++;
-        }
-
-        _gameObjectTextFields[k].SetActive(true);
-
-        var color = _colorsOfTextFields[k];
+    public void ChangeColor(int positionInList)
+    {
+        var color = _colorsOfTextFields[positionInList];
         color.r += 0.1f;
-        _colorsOfTextFields[k] = color;
-
-        _textFields[k].color = color;
+        _colorsOfTextFields[positionInList] = color;
+        _textFields[positionInList].color = color;
     }
 }
+
